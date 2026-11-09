@@ -2,20 +2,15 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 
-/** Reading of the four data files. Ready to use, you do not need to change it. */
 public class Input {
 
-    /** Two virus strains, letters A C G T. */
     public record Strains(String a, String b) {}
 
-    /** The marker (one gene to find). */
     public record Markers(String marker, String[] panel) {}
 
-    /** The tree of infections: n people numbered 0 .. n-1, n-1 links "a b" (somebody infected somebody, the direction is not given),
-     *  and the cost of testing each person. */
     public record Tree(int n, int[] a, int[] b, int[] cost) {
         public int links() { return a.length; }
-        /** neighbours[v] = the people linked with v. Root the tree in person 0 yourself. */
+
         public int[][] neighbours() {
             int[] deg = new int[n];
             for (int i = 0; i < a.length; i++) { deg[a[i]]++; deg[b[i]]++; }
@@ -27,7 +22,6 @@ public class Input {
         }
     }
 
-    /** Reads a text file as lines. Tolerates Windows line ends, a BOM at the start and blank lines at the end. */
     static List<String> lines(String path) throws IOException {
         String t = new String(Files.readAllBytes(Path.of(path)), java.nio.charset.StandardCharsets.UTF_8);
         if (t.startsWith("\uFEFF")) t = t.substring(1);
